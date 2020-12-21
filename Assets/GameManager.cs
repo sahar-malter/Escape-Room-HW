@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> inventory;
     public static GameObject Current_Item;
     public List<Button> button_inventory;
+    private int _index;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
         {
             Current_Item = inventory[index];
             Debug.Log(inventory[index].name + " is now the current item");
+            _index = index; 
         }
         else 
         { 
@@ -42,7 +44,13 @@ public class GameManager : MonoBehaviour
     }
     public void RemoveFromInventory(GameObject used_item)
     {
+
         inventory.Remove(used_item);
         Debug.Log(used_item + " was removed from the inventory");
+        for (int i = _index; i < button_inventory.Count-1; i++)
+        {
+            button_inventory[i].GetComponent<Image>().color = button_inventory[i + 1].GetComponent<Image>().color;
+        }
+        button_inventory[button_inventory.Count-1].GetComponent<Image>().color = Color.white;
     }
 }

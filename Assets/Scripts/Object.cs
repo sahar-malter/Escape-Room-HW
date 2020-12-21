@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Object : MonoBehaviour
 {
-    public string name;
+    public string _name;
     public bool IsPickable;
     public bool IsComplexed;
     public bool IsInteractable;
@@ -31,7 +31,7 @@ public class Object : MonoBehaviour
     {
         if (IsPickable)
         {
-        Debug.Log(name + " was picked");
+        Debug.Log(_name + " was picked");
             gameManager.AddToInventory(gameObject);
             gameObject.SetActive(false);
         //do func to add to inventory and remove from game view
@@ -41,20 +41,43 @@ public class Object : MonoBehaviour
     {
         if(IsInteractable && GameManager.Current_Item == required_item || IsSolved)
         {
-            Debug.Log(required_item.name + " was used" + name + " preformed an interaction");
+            Debug.Log(required_item.name + " was used, " + _name + " preformed an interaction");
             IsSolved = true;
-            //do somthing
+            if (GameManager.Current_Item == required_item) 
+            {
+            gameManager.RemoveFromInventory(required_item);
+            }
+            GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
         else
         {
-            Debug.Log("cant touch this");
+            Debug.Log(_name +" cant touch this");
         }
         // use animator or leantween to perform some action in the game
     }
 
     public void complex_interact()
     {
+        bool can_interact = true;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<Object>().IsSolved == false)
+            {
+                can_interact = false;
+                break;
+            }
+        }
+        if (can_interact)
+        {
+            Debug.Log(_name + " preformed an interaction");
+            GetComponent<MeshRenderer>().material.color = Color.cyan;
 
+
+        }
+        else
+        {
+            Debug.Log(_name +" cant touch this");
+        }
     }
 
     private void OnMouseDown()
