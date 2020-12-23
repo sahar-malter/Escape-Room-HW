@@ -18,12 +18,16 @@ public class Object : MonoBehaviour
     {
         IsSolved = false;
         gameManager = FindObjectOfType<GameManager>();
+
+        if (required_item == null)
+        {
+            IsSolved = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
 
